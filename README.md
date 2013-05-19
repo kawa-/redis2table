@@ -30,6 +30,38 @@ After that, visit [http://localhost:8080/redis2table](http://localhost:80/redis2
 
 similar to Ubuntu / Debian.
 
+## Edit
+
+First, go to index.php…
+
+```
+$ cd redis2table
+$ vi index.php
+```
+
+Next, edit index.php line #5 on your Redis env.
+
+```
+$redis->connect("localhost", 6379, 2.5);
+// "2.5" means timeout. So let it be. 
+```
+
+If you redis data is empty, please uncomment "Testing data".
+
+```
+/* Testing data
+$redis->flushAll();
+
+$redis->set(uniqid("key_"), uniqid("key_value_1_"));
+
+// ~ omitted ~ //
+
+$redis->zAdd($key_zset_03, time(), uniqid("zset_value_22_"));
+$redis->zAdd($key_zset_03, time(),uniqid("zset_value_23_"));
+*/
+```
+
+
 ## ToDo
 
 - auto reload
