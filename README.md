@@ -4,7 +4,7 @@ Simple table based viewer of Redis. You can monitor every redis keys like Key, L
 
 ## Demo site
 
-[redis2table](http://mitsuakikawamorita.com/software/redis2table/)
+[redis2table](http://mitsuakikawamorita.com/software/redis2table/index.php?host=127.0.0.1&port=6379&init=true)
 
 ## Screenshot
 
