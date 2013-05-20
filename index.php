@@ -2,40 +2,52 @@
 $title = "redis2table";
 
 $redis = new Redis();
-$redis->connect("localhost", 6379, 2.5); // Please edit here on your env. 2.5 sec timeout.
 
-/* Testing data
-  $redis->flushAll();
+if (!isset($_GET["host"]) or !isset($_GET["port"])) {
+	die('<p>Error. Wrong host or port. Access like this -> http://localhost:8080/index.php?host=localhost&port=6379</p><p> Or if you want erase and set random data of redis, please like this -> http://localhost:8080/index.php?host=localhost&port=6379&init=true</p>');
+}
 
-  $redis->set(uniqid("key_"), uniqid("key_value_1_"));
-  $redis->set(uniqid("key_"), uniqid("key_value_2_"));
-  $redis->set(uniqid("key_"), uniqid("key_value_3_"));
+$host = htmlspecialchars($_GET["host"]);
+$port = htmlspecialchars($_GET["port"]);
+$timeout = 2.5;
 
-  $redis->hMset(uniqid("hash_"), array('name' => 'yukkuri_1', 'salary' => 1000));
-  $redis->hMset(uniqid("hash_"), array('name' => 'yukkuri_2', 'salary' => 2000));
-  $redis->hMset(uniqid("hash_"), array('name' => 'yukkuri_3', 'salary' => 3000));
+if (!$redis->connect($host, $port, $timeout)) {
+	die("<p>Error. Could not access to local redis server. Please check whether redis is running or not.</p>");
+}
 
-  $redis->rPush(uniqid("list_"), uniqid("list_value_01_"), uniqid("list_value_02_"), uniqid("list_value_03_"));
-  $redis->rPush(uniqid("list_"), uniqid("list_value_11_"), uniqid("list_value_12_"), uniqid("list_value_13_"));
-  $redis->rPush(uniqid("list_"), uniqid("list_value_21_"), uniqid("list_value_22_"), uniqid("list_value_23_"));
+// Testing data (Please use it if you have empty redis data)
+if (isset($_GET["init"]) and $_GET["init"] === "true") {
+	$redis->flushAll();
 
-  $redis->sAdd(uniqid("set_"), uniqid("set_value_01_"), uniqid("set_value_02_"));
-  $redis->sAdd(uniqid("set_"), uniqid("set_value_11_"), uniqid("set_value_12_"));
-  $redis->sAdd(uniqid("set_"), uniqid("set_value_21_"), uniqid("set_value_22_"));
+	$redis->set(uniqid("key_"), uniqid("key_value_1_"));
+	$redis->set(uniqid("key_"), uniqid("key_value_2_"));
+	$redis->set(uniqid("key_"), uniqid("key_value_3_"));
 
-  $key_zset_01 = uniqid("zset_");
-  $redis->zAdd($key_zset_01, time(), uniqid("zset_value_01_"));
-  $redis->zAdd($key_zset_01, time(), uniqid("zset_value_02_"));
-  $redis->zAdd($key_zset_01, time(), uniqid("zset_value_03_"));
-  $key_zset_02 = uniqid("zset_");
-  $redis->zAdd($key_zset_02, time(), uniqid("zset_value_11_"));
-  $redis->zAdd($key_zset_02, time(), uniqid("zset_value_12_"));
-  $redis->zAdd($key_zset_02, time(), uniqid("zset_value_13_"));
-  $key_zset_03 = uniqid("zset_");
-  $redis->zAdd($key_zset_03, time(), uniqid("zset_value_21_"));
-  $redis->zAdd($key_zset_03, time(), uniqid("zset_value_22_"));
-  $redis->zAdd($key_zset_03, time(), uniqid("zset_value_23_"));
- */
+	$redis->hMset(uniqid("hash_"), array('name' => 'yukkuri_1', 'salary' => 1000));
+	$redis->hMset(uniqid("hash_"), array('name' => 'yukkuri_2', 'salary' => 2000));
+	$redis->hMset(uniqid("hash_"), array('name' => 'yukkuri_3', 'salary' => 3000));
+
+	$redis->rPush(uniqid("list_"), uniqid("list_value_01_"), uniqid("list_value_02_"), uniqid("list_value_03_"));
+	$redis->rPush(uniqid("list_"), uniqid("list_value_11_"), uniqid("list_value_12_"), uniqid("list_value_13_"));
+	$redis->rPush(uniqid("list_"), uniqid("list_value_21_"), uniqid("list_value_22_"), uniqid("list_value_23_"));
+
+	$redis->sAdd(uniqid("set_"), uniqid("set_value_01_"), uniqid("set_value_02_"));
+	$redis->sAdd(uniqid("set_"), uniqid("set_value_11_"), uniqid("set_value_12_"));
+	$redis->sAdd(uniqid("set_"), uniqid("set_value_21_"), uniqid("set_value_22_"));
+
+	$key_zset_01 = uniqid("zset_");
+	$redis->zAdd($key_zset_01, time(), uniqid("zset_value_01_"));
+	$redis->zAdd($key_zset_01, time(), uniqid("zset_value_02_"));
+	$redis->zAdd($key_zset_01, time(), uniqid("zset_value_03_"));
+	$key_zset_02 = uniqid("zset_");
+	$redis->zAdd($key_zset_02, time(), uniqid("zset_value_11_"));
+	$redis->zAdd($key_zset_02, time(), uniqid("zset_value_12_"));
+	$redis->zAdd($key_zset_02, time(), uniqid("zset_value_13_"));
+	$key_zset_03 = uniqid("zset_");
+	$redis->zAdd($key_zset_03, time(), uniqid("zset_value_21_"));
+	$redis->zAdd($key_zset_03, time(), uniqid("zset_value_22_"));
+	$redis->zAdd($key_zset_03, time(), uniqid("zset_value_23_"));
+}
 
 // prepare arrays for each types
 $key_arr = array();
@@ -73,24 +85,6 @@ $key_value_table = array();
 if (count($key_arr) !== 0) {
 	foreach ($key_arr as $key) {
 		$key_value_table[] = "<tr><td>" . $key . "</td><td>" . $redis->get($key) . "</td><td>" . $redis->ttl($key) . "</td></tr>";
-	}
-}
-
-$list_table = array();
-if (count($list_arr) !== 0) {
-	foreach ($list_arr as $key) {
-		$rowspan = $redis->lSize($key);
-		$counter = $rowspan;
-		$rep = '<tr><td rowspan="' . $rowspan . '">' . $key . '</td>';
-		foreach ($redis->lRange($key, 0, -1) as $list_value) {
-			if ($rowspan === $counter) {
-				$rep .= '<td>' . $list_value . '</td></tr>';
-			} else {
-				$rep = '<tr><td>' . $list_value . '</td></tr>';
-			}
-			$list_table[] = $rep;
-			$counter--;
-		}
 	}
 }
 
@@ -147,6 +141,48 @@ if (count($hash_arr) !== 0) {
 		}
 	}
 }
+
+$list_table = array();
+if (count($list_arr) !== 0) {
+	foreach ($list_arr as $key) {
+		$rowspan = $redis->lSize($key);
+		$counter = $rowspan;
+		$rep = '<tr><td rowspan="' . $rowspan . '">' . $key . '</td>';
+		foreach ($redis->lRange($key, 0, -1) as $list_value) {
+			if ($rowspan === $counter) {
+				$rep .= '<td>' . $list_value . '</td></tr>';
+			} else {
+				$rep = '<tr><td>' . $list_value . '</td></tr>';
+			}
+			$list_table[] = $rep;
+			$counter--;
+		}
+	}
+}
+
+$info_table = array();
+foreach ($redis->info() as $key => $value) {
+	$info_table[] = "<tr><td>" . $key . "</td><td>" . $value . "</td></tr>";
+}
+// generate div and talbe.
+function div_table($section_name, $item_array, $contents_array) {
+	$res = "<div>";
+	$res .= "<h2>";
+	$res .= $section_name;
+	$res .= "</h2>";
+	$res .= '<table><tr align = "center">';
+	foreach ($item_array as $value) {
+		$res .= "<td>";
+		$res .= $value;
+		$res .= "</td>";
+	}
+	$res .= "</tr>";
+	foreach ($contents_array as $value) {
+		$res .= $value;
+	}
+	$res .= "</table></div>";
+	return $res;
+}
 ?>
 <!DOCTYPE html>
 <html lang = "en">
@@ -167,85 +203,23 @@ if (count($hash_arr) !== 0) {
 	<body>
 		<div>
             <h1><?php echo $title; ?></h1>
-            <p>Show all the Redis keys and values.</p>
+            <p>Redis monitoring tool. Available Key, List, Set, Sorted Set, Hash and Redis Info.</p>
+			<p>Access like this -> http://localhost:8080/index.php?host=localhost&port=6379</p>
         </div>
         <hr>
-		<div>
-			<h2>Key-Value</h2>
-			<table>
-				<tr align = "center">
-					<td>key</td>
-					<td>value</td>
-					<td>ttl</td>
-				</tr>
-				<?php
-				foreach ($key_value_table as $value) {
-					echo $value . "\n";
-				}
-				?>
-			</table>
-		</div>
+		<?php
+		echo div_table("Key Value (String)", array("Key", "Value", "TTL"), $key_value_table);
+		echo "<hr>";
+		echo div_table("List", array("Key", "Value"), $list_table);
+		echo "<hr>";
+		echo div_table("Set", array("Key", "Value"), $set_table);
+		echo "<hr>";
+		echo div_table("Sorted Set", array("Key", "Value", "Score"), $zset_table);
+		echo "<hr>";
+		echo div_table("Hash", array("Key", "Field", "Value"), $hash_table);
+		echo "<hr>";
+		echo div_table("Redis info", array("Key", "Value"), $info_table);
+		?>
 		<hr>
-		<div>
-			<h2>List</h2>
-			<table>
-				<tr align = "center">
-					<td>key</td>
-					<td>value</td>
-				</tr>
-				<?php
-				foreach ($list_table as $value) {
-					echo $value . "\n";
-				}
-				?>
-			</table>
-		</div>
-		<hr>
-		<div>
-			<h2>Set</h2>
-			<table>
-				<tr align = "center">
-					<td>key</td>
-					<td>value</td>
-				</tr>
-				<?php
-				foreach ($set_table as $value) {
-					echo $value . "\n";
-				}
-				?>
-			</table>
-		</div>
-		<hr>
-		<div>
-			<h2>zSet</h2>
-			<table>
-				<tr align = "center">
-					<td>key</td>
-					<td>value</td>
-					<td>score</td>
-				</tr>
-				<?php
-				foreach ($zset_table as $value) {
-					echo $value . "\n";
-				}
-				?>
-			</table>
-		</div>
-		<hr>
-		<div>
-			<h2>Hash</h2>
-			<table>
-				<tr align = "center">
-					<td>key</td>
-					<td>field</td>
-					<td>value</td>
-				</tr>
-				<?php
-				foreach ($hash_table as $value) {
-					echo $value . "\n";
-				}
-				?>
-			</table>
-		</div>
 	</body>
 </html>

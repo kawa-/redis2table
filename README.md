@@ -1,6 +1,6 @@
 # redis2table
 
-Simple table based viewer of Redis. You can monitor every redis keys like Key, List, Set, Sorted Set, Hash.
+Simple table based viewer of Redis. You can monitor every redis keys like Key, List, Set, Sorted Set, Hash and Redis info.
 
 ## Demo site
 
@@ -24,47 +24,15 @@ $ cd redis2table
 $ php54 -S localhost:8080
 ```
 
-After that, visit [http://localhost:8080/redis2table](http://localhost:80/redis2table) (by Apache et al.) or [http://localhost:8080/](http://localhost:8080/) (by built-in webserver)
+After that, visit [http://localhost:8080/index.php?host=localhost&port=6379](http://localhost:8080/index.php?host=localhost&port=6379) (by Apache et al.).
 
 ### CentOS
 
 similar to Ubuntu / Debian.
 
-## Edit
-
-First, go to index.php…
-
-```
-$ cd redis2table
-$ vi index.php
-```
-
-Next, edit index.php line #5 on your Redis env.
-
-```
-$redis->connect("localhost", 6379, 2.5);
-// "2.5" means timeout. So let it be. 
-```
-
-If you redis data is empty, please uncomment "Testing data".
-
-```
-/* Testing data
-$redis->flushAll();
-
-$redis->set(uniqid("key_"), uniqid("key_value_1_"));
-
-// ~ omitted ~ //
-
-$redis->zAdd($key_zset_03, time(), uniqid("zset_value_22_"));
-$redis->zAdd($key_zset_03, time(),uniqid("zset_value_23_"));
-*/
-```
-
-
 ## ToDo
 
-- auto reload
+- auto reload by ajax
 - more document
-
+- cool design
 
