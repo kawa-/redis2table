@@ -24,7 +24,7 @@ $ cd redis2table
 $ php54 -S localhost:8080
 ```
 
-After that, visit [http://localhost:8080/index.php?host=localhost&port=6379](http://localhost:8080/index.php?host=localhost&port=6379) (by Apache et al.).
+After that, visit [http://localhost:8080/index.php?host=localhost&port=6379](http://localhost:8080/index.php?host=localhost&port=6379) .
 
 ### CentOS
 
