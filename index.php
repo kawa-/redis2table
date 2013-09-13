@@ -4,7 +4,7 @@ $title = "redis2table";
 $redis = new Redis();
 
 if (!isset($_GET["host"]) or !isset($_GET["port"])) {
-	die('<p>Error. Wrong host or port. Access like this -> http://localhost:8080/index.php?host=localhost&port=6379</p><p> Or if you want erase and set random data of redis, please like this -> http://localhost:8080/index.php?host=localhost&port=6379&init=true</p>');
+	die('<p>Error. Wrong host or port. Access like this -> http://localhost:8080/?host=localhost&port=6379</p><p> Or if you want erase and set random data of Redis, please like this -> http://localhost:8080/?host=localhost&port=6379&init=true</p>');
 }
 
 $host = htmlspecialchars($_GET["host"]);
@@ -12,7 +12,7 @@ $port = htmlspecialchars($_GET["port"]);
 $timeout = 2.5;
 
 if (!$redis->connect($host, $port, $timeout)) {
-	die("<p>Error. Could not access to local redis server. Please check whether redis is running or not.</p>");
+	die("<p>Error. Could not access to a local Redis server. Please check whether the Redis server is running or not.</p>");
 }
 
 // Testing data (Please use it if you have empty redis data)
@@ -210,8 +210,8 @@ function div_table($section_name, $item_array, $contents_array) {
 	<body>
 		<div>
             <h1><?php echo $title; ?></h1>
-            <p>Redis monitoring tool. Available Key, List, Set, Sorted Set, Hash and Redis Info.</p>
-			<p>Access like this -> http://localhost:8080/index.php?host=localhost&port=6379</p>
+            <p>Redis monitoring tool. It shows a Redis Server's Key, List, Set, Sorted Set, Hash and Redis Info.</p>
+			<p>Access like this -> http://localhost:8080/?host=localhost&port=6379</p>
         </div>
         <hr>
 		<?php
