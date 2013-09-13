@@ -1,10 +1,10 @@
 # redis2table
 
-Simple table based viewer of Redis. You can monitor every redis keys like Key, List, Set, Sorted Set, Hash and Redis info.
+Table based viewer of Redis. You can monitor Redis's Key, List, Set, Sorted Set, Hash and info.
 
 ## Demo site
 
-[redis2table](http://mitsuakikawamorita.com/software/redis2table/index.php?host=127.0.0.1&port=6379&init=true)
+[redis2table](http://mitsuakikawamorita.com/software/redis2table/?host=127.0.0.1&port=6379&init=true)
 
 ## Screenshot
 
@@ -33,6 +33,6 @@ similar to Ubuntu / Debian.
 ## ToDo
 
 - auto reload by ajax
-- more document
-- cool design
+- more documents
+- a cool design
 
