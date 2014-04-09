@@ -82,11 +82,11 @@ foreach ($all_keys as $key) {
 }
 
 // sort by NUMERIC
-sort($key_arr, SORT_NUMERIC);
-sort($set_arr, SORT_NUMERIC);
-sort($list_arr, SORT_NUMERIC);
-sort($zset_arr, SORT_NUMERIC);
-sort($hash_arr, SORT_NUMERIC);
+sort($key_arr, SORT_STRING);
+sort($set_arr, SORT_STRING);
+sort($list_arr, SORT_STRING);
+sort($zset_arr, SORT_STRING);
+sort($hash_arr, SORT_STRING);
 
 $key_value_table = array();
 if (count($key_arr) !== 0) {
